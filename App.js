@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   prayers: {
     position: 'absolute',
     top: 0,
-    width: 350,
+    width: '100%',
     height: 200,
     borderColor: '#97CD98',
     backgroundColor: '#97CD98',
