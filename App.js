@@ -17,7 +17,7 @@ export default function App() {
     // setInterval(() => {console.log('Failure to fetch API')}, 60 * 1000);
     if (loadAll) {
       updateInterval = setInterval(() => {
-        closestPrayer();
+        findTimeToAllPrayers();
       }, 30 * 1000);
     }
 
@@ -26,7 +26,7 @@ export default function App() {
   
 
   const [loadAll, setLoadAll] = useState(false);
-  const [closestPTime, setClosestPTime] = useState(['', '']);
+  const [minPrayer, setMinPrayer] = useState(null);
   const [prayerTimes, setPrayerTimes] = useStateCallback({
     Fajr: '',
     Zuhr: '',
@@ -34,10 +34,18 @@ export default function App() {
     Maghrib: '',
     Isha: ''
   }, () => {
-    closestPrayer();
+    findTimeToAllPrayers();
     setLoadAll(true);
   });
-
+  const [closestPrayerTimes, setClosestPrayerTimes] = useStateCallback({
+    Fajr: '',
+    Zuhr: '',
+    Asr: '',
+    Maghrib: '',
+    Isha: ''
+  }, () => {
+    findMinPrayer();
+  });
 
 
   const apiTimes = async () => {
@@ -56,53 +64,93 @@ export default function App() {
     .catch(err => console.log(err));
   }
   
-  
-  const closestPrayer = () => {
-    //convert hours to minutes and calculate.
-    let time = new Date();
-    let currentMins = (time.getHours() * 60) + time.getMinutes();
-    let minDif = 24*60;
-    let maxDif = 0;
-    let minPrayer = '';
-    let maxPrayer = '';
+  const findTimeToAllPrayers = () => {
+    setClosestPrayerTimes({
+      Fajr: timeToPrayer(prayerTimes['Fajr']),
+      Zuhr: timeToPrayer(prayerTimes['Zuhr']),
+      Asr: timeToPrayer(prayerTimes['Asr']),
+      Maghrib: timeToPrayer(prayerTimes['Maghrib']),
+      Isha: timeToPrayer(prayerTimes['Isha'])
+    });
+    
+  }
 
-    for (var prayer in prayerTimes) {
-      let prayerTime = (Number.parseInt(prayerTimes[prayer].toString().slice(0, 3), 10) * 60) + Number.parseInt(prayerTimes[prayer].toString().slice(3,5));
-      let currDif = currentMins - prayerTime;
-      if (currDif < minDif) {    
-        if (minDif > 0) {
-          minDif = currDif;
-          minPrayer = prayer.toString();
-        }
-      } else {
-        if (currDif < 0 && currDif > minDif) {
-          minDif = currDif;
-          minPrayer = prayer.toString()
-        }
-      }
-      if (currDif > maxDif) {
-        maxDif = currDif;
-        maxPrayer = prayer.toString();
-      }
-    }
-
-    if (minDif > 0) {
-      minDif = (24*60) - maxDif;
-      minPrayer = maxPrayer;
+  const timeToPrayer = (targetTime) => {
+    let currTime = new Date();
+    
+    let prayerMins = (Number.parseInt(targetTime.slice(0, 2)) * 60) + Number.parseInt(targetTime.slice(3,5));
+    let currMins = (currTime.getHours() * 60) + currTime.getMinutes();
+    let diff = 0;
+    if (currMins < prayerMins) {
+        diff = prayerMins - currMins;
     } else {
-      minDif = Math.abs(minDif);
+        diff = (24*60) - (currMins - prayerMins);
     }
     
-    let hourDif = Math.floor(minDif / 60).toString();
-    let minuteDif = (minDif % 60);
-    if (minuteDif < 10) {
-      minuteDif = '0' + minuteDif.toString();
-    } else {
-      minuteDif = minuteDif.toString();
-    }
+    return diff;
+    // let difHour = Math.floor(diff / 60);
+    // let difMin = diff % 60;
+    // return [difHour.toString(), difMin.toString()]
+}
 
-    setClosestPTime([minPrayer, hourDif + ':' + minuteDif]);
-  };
+  const findMinPrayer = () => {
+    let currMin = Infinity;
+    let currPrayer = '';
+    for (var prayer in closestPrayerTimes) {
+      if (closestPrayerTimes[prayer] < currMin) {
+        currMin = closestPrayerTimes[prayer];
+        currPrayer = prayer;
+      }
+    }
+    setMinPrayer(currPrayer);
+
+  }
+  // const closestPrayer = () => {
+  //   //convert hours to minutes and calculate.
+  //   let time = new Date();
+  //   let currentMins = (time.getHours() * 60) + time.getMinutes();
+  //   let minDif = 24*60;
+  //   let maxDif = 0;
+  //   let minPrayer = '';
+  //   let maxPrayer = '';
+
+  //   for (var prayer in prayerTimes) {
+  //     let prayerTime = (Number.parseInt(prayerTimes[prayer].toString().slice(0, 3), 10) * 60) + Number.parseInt(prayerTimes[prayer].toString().slice(3,5));
+  //     let currDif = currentMins - prayerTime;
+  //     if (currDif < minDif) {    
+  //       if (minDif > 0) {
+  //         minDif = currDif;
+  //         minPrayer = prayer.toString();
+  //       }
+  //     } else {
+  //       if (currDif < 0 && currDif > minDif) {
+  //         minDif = currDif;
+  //         minPrayer = prayer.toString()
+  //       }
+  //     }
+  //     if (currDif > maxDif) {
+  //       maxDif = currDif;
+  //       maxPrayer = prayer.toString();
+  //     }
+  //   }
+
+  //   if (minDif > 0) {
+  //     minDif = (24*60) - maxDif;
+  //     minPrayer = maxPrayer;
+  //   } else {
+  //     minDif = Math.abs(minDif);
+  //   }
+    
+  //   let hourDif = Math.floor(minDif / 60).toString();
+  //   let minuteDif = (minDif % 60);
+  //   if (minuteDif < 10) {
+  //     minuteDif = '0' + minuteDif.toString();
+  //   } else {
+  //     minuteDif = minuteDif.toString();
+  //   }
+
+  //   setClosestPTime([minPrayer, hourDif + ':' + minuteDif]);
+  // };
 
   return (
     <View style={styles.mainContainer}>

@@ -7,7 +7,8 @@ const AllPrayersView = (props) => {
     useEffect(() => {
         let minPrayer = Infinity;
         for (var prayer in timeToPrayers) {
-            setTimeToPrayers({prayer: timeToPrayer(prayer)});
+            setTimeToPrayers({prayer: timeToPrayer(props.prayerTimes[prayer])});
+            console.log(timeToPrayer(props.prayerTimes[prayer]));
         }
         findMinPrayer();
     }, []);
@@ -24,6 +25,7 @@ const AllPrayersView = (props) => {
     const findMinPrayer = () => {
         let currMin = Infinity;
         for (var prayer in timeToPrayers) {
+            console.log(timeToPrayers);
             let pMin = (Number.parseInt(timeToPrayers[prayer][0]) * 60) + Number.parseInt(timeToPrayers[prayer][1]);
             if (pMin < currMin) currMin = pMin;
         }
