@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import PrayerDetails from "./prayerDetails";
 
 const AllPrayersView = (props) => {
@@ -7,19 +7,21 @@ const AllPrayersView = (props) => {
 
 
     return (
-        <View style={styles.prayersContainer}>
+        <ScrollView style={styles.prayersContainer}>
             {
                 Object.keys(props.prayerTimes).map((keyName, index) => {
                     return <PrayerDetails 
-                    style={keyName === props.minPrayer ? styles.highlighted : styles.singlePrayer} 
+                    highlight={keyName === props.minPrayer} 
                     prayer={keyName}
                     timeToPrayer={props.closestPrayerTimes[keyName]}
                     key={index} 
-                    prayerTime={props.prayerTimes[keyName]} />
+                    prayerTime={props.prayerTimes[keyName]}
+                    hoursFunc={props.hoursFunc}
+                    minsFunc={props.minsFunc} />
                     
                 })
             }
-        </View>
+        </ScrollView>
     )
 
 }
@@ -28,30 +30,13 @@ const styles = StyleSheet.create({
     prayersContainer: {
         position: 'relative',
         width: '100%',
-        height: 240,
-        borderColor: '#fff',
+        height: 740,
+        borderColor: '#000',
         borderWidth: 1,
         borderRadius: 10,
         marginTop: '50%',
         zIndex: 1,
         backgroundColor: 'white'
-    },
-    singlePrayer: {
-        width: '100%',
-        fontSize: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 5,
-    },
-    highlighted: {
-        width: '100%',
-        fontSize: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 5,
-        backgroundColor: 'green'
     }
 });
 

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import useStateCallback from './useStateCallback';
 import AllPrayersView from './components/allPrayersView';
@@ -31,6 +31,7 @@ export default function App() {
  
   const [loadAll, setLoadAll] = useState(false);
   const [minPrayer, setMinPrayer] = useState(null);
+  const [minPrayerTime, setMinPrayerTime] = useState([0, 0]);
   const [prayerTimes, setPrayerTimes] = useStateCallback({
     Fajr: '',
     Zuhr: '',
@@ -105,7 +106,15 @@ export default function App() {
       }
     }
     setMinPrayer(currPrayer);
+  }
 
+  const convertHours = (mins) => {
+
+    return Math.floor(mins / 60);
+  }
+
+  const convertMins = (mins) => {
+    return mins % 60;
   }
 
   return (
@@ -116,13 +125,20 @@ export default function App() {
         Next Prayer:
         </Text>
         <Text style={styles.nextPrayerTime}>
-          {!loadAll ? 'Loading...' : minPrayer + ' in ' + closestPrayerTimes[minPrayer]}
+          {!loadAll ? 'Loading...' : minPrayer + ' in ' + convertHours(closestPrayerTimes[minPrayer]) + 'h ' + convertMins(closestPrayerTimes[minPrayer]) + 'm'}
         </Text>
       </View>
-      {loadAll ? <AllPrayersView 
-                  prayerTimes={prayerTimes} 
-                  closestPrayerTimes={closestPrayerTimes}
-                  minPrayer={minPrayer} /> : <Text>Please Wait</Text>}
+      <ScrollView style={styles.scrollStyle}>
+        
+        {loadAll ? <AllPrayersView 
+                    prayerTimes={prayerTimes} 
+                    closestPrayerTimes={closestPrayerTimes}
+                    minPrayer={minPrayer}
+                    hoursFunc={convertHours}
+                    minsFunc={convertMins}
+                     /> : <Text>Please Wait</Text>}
+                    
+      </ScrollView>
     </View>
   );
 }
@@ -132,14 +148,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    height: 200,
+    height: 500,
+    paddingBottom: 250,
     borderColor: '#97CD98',
     backgroundColor: '#97CD98',
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
     borderWidth: 1,
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
     zIndex: -1
   },
@@ -155,5 +172,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  scrollStyle: {
+    position: 'relative',
+    top: 0,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   }
+  
 });

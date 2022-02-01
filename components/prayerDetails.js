@@ -3,25 +3,54 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 
 const PrayerDetails = (props) => {
     
+    const [expand, setExpand] = useState(false);
      
     return (
-        <View>
+        <TouchableOpacity style={expand ? styles.singlePrayerExpanded : props.highlight ? styles.highlighted : styles.singlePrayer} onPress={() => setExpand(!expand)}>
             <View>
                 <Text>
                     {props.prayer}
                 </Text>
                 <Text>
-                    {props.timeToPrayer}
+                    {'in ' + props.hoursFunc(props.timeToPrayer) + 'h ' + props.minsFunc(props.timeToPrayer) + 'm'}
                 </Text>
             </View> 
             <Text>
                 {props.prayerTime}
             </Text>
-        </View>
+        </TouchableOpacity>
     )
 
 }
 
+const styles = StyleSheet.create({
+    singlePrayer: {
+        width: '100%',
+        fontSize: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5
+    },
+    highlighted: {
+        width: '100%',
+        fontSize: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5,
+        backgroundColor: '#add'
+    },
+    singlePrayerExpanded: {
+        width: '100%',
+        fontSize: 30,
+        height: 100,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5
+    }
+});
 
 
 export default PrayerDetails;
