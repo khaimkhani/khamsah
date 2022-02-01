@@ -8,23 +8,31 @@ export default function App() {
   
   useEffect(() => {
     apiTimes();
-    
   }, []);
 
   useEffect(() => {
     // Finish timer
-    var updateInterval = null;
+    console.log(updateTimer);
     // setInterval(() => {console.log('Failure to fetch API')}, 60 * 1000);
     if (loadAll) {
-      updateInterval = setInterval(() => {
-        findTimeToAllPrayers();
-      }, 30 * 1000);
+      // updateInterval = setInterval(() => {
+      //   findTimeToAllPrayers();
+      //   console.log('updated');
+      // }, 1 * 1000);
+      findTimeToAllPrayers();
+      console.log('updated');
     }
 
-    return () => clearInterval(updateInterval);
-  });
+    // return () => {
+    //   console.log('destroyed');
+    //   clearInterval(updateInterval);
+    // };
+  }, [updateTimer]);
   
-
+  const [updateTimer, setUpdateTimer] = useStateCallback(true, () => {
+    console.log('invoked');
+    setTimeout(() => setUpdateTimer(!updateTimer), 1000);
+  });
   const [loadAll, setLoadAll] = useState(false);
   const [minPrayer, setMinPrayer] = useState(null);
   const [prayerTimes, setPrayerTimes] = useStateCallback({
@@ -37,6 +45,7 @@ export default function App() {
     findTimeToAllPrayers();
     setLoadAll(true);
   });
+  
   const [closestPrayerTimes, setClosestPrayerTimes] = useStateCallback({
     Fajr: '',
     Zuhr: '',
@@ -88,9 +97,6 @@ export default function App() {
     }
     
     return diff;
-    // let difHour = Math.floor(diff / 60);
-    // let difMin = diff % 60;
-    // return [difHour.toString(), difMin.toString()]
 }
 
   const findMinPrayer = () => {
@@ -105,52 +111,6 @@ export default function App() {
     setMinPrayer(currPrayer);
 
   }
-  // const closestPrayer = () => {
-  //   //convert hours to minutes and calculate.
-  //   let time = new Date();
-  //   let currentMins = (time.getHours() * 60) + time.getMinutes();
-  //   let minDif = 24*60;
-  //   let maxDif = 0;
-  //   let minPrayer = '';
-  //   let maxPrayer = '';
-
-  //   for (var prayer in prayerTimes) {
-  //     let prayerTime = (Number.parseInt(prayerTimes[prayer].toString().slice(0, 3), 10) * 60) + Number.parseInt(prayerTimes[prayer].toString().slice(3,5));
-  //     let currDif = currentMins - prayerTime;
-  //     if (currDif < minDif) {    
-  //       if (minDif > 0) {
-  //         minDif = currDif;
-  //         minPrayer = prayer.toString();
-  //       }
-  //     } else {
-  //       if (currDif < 0 && currDif > minDif) {
-  //         minDif = currDif;
-  //         minPrayer = prayer.toString()
-  //       }
-  //     }
-  //     if (currDif > maxDif) {
-  //       maxDif = currDif;
-  //       maxPrayer = prayer.toString();
-  //     }
-  //   }
-
-  //   if (minDif > 0) {
-  //     minDif = (24*60) - maxDif;
-  //     minPrayer = maxPrayer;
-  //   } else {
-  //     minDif = Math.abs(minDif);
-  //   }
-    
-  //   let hourDif = Math.floor(minDif / 60).toString();
-  //   let minuteDif = (minDif % 60);
-  //   if (minuteDif < 10) {
-  //     minuteDif = '0' + minuteDif.toString();
-  //   } else {
-  //     minuteDif = minuteDif.toString();
-  //   }
-
-  //   setClosestPTime([minPrayer, hourDif + ':' + minuteDif]);
-  // };
 
   return (
     <View style={styles.mainContainer}>
@@ -160,10 +120,13 @@ export default function App() {
         Next Prayer:
         </Text>
         <Text style={styles.nextPrayerTime}>
-          {!loadAll ? 'Loading...' : closestPTime[0] + ': ' + closestPTime[1]}
+          {!loadAll ? 'Loading...' : minPrayer + ' in ' + closestPrayerTimes[minPrayer]}
         </Text>
       </View>
-      {loadAll ? <AllPrayersView prayerTimes={prayerTimes} /> : <Text>Please Wait</Text>}
+      {loadAll ? <AllPrayersView 
+                  prayerTimes={prayerTimes} 
+                  closestPrayerTimes={closestPrayerTimes}
+                  minPrayer={minPrayer} /> : <Text>Please Wait</Text>}
     </View>
   );
 }

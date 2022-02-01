@@ -11,7 +11,7 @@ const PrayerDetails = (props) => {
                     {props.prayer}
                 </Text>
                 <Text>
-                    {props.timeToPrayer[0] + 'h ' + props.timeToPrayer[1] + 'm'}
+                    {props.timeToPrayer}
                 </Text>
             </View> 
             <Text>
