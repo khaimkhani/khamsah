@@ -12,27 +12,23 @@ export default function App() {
 
   useEffect(() => {
     // Finish timer
-    console.log(updateTimer);
+    var updateInterval = null;
     // setInterval(() => {console.log('Failure to fetch API')}, 60 * 1000);
     if (loadAll) {
-      // updateInterval = setInterval(() => {
-      //   findTimeToAllPrayers();
-      //   console.log('updated');
-      // }, 1 * 1000);
-      findTimeToAllPrayers();
-      console.log('updated');
+      updateInterval = setInterval(() => {
+        findTimeToAllPrayers();
+        console.log('updated');
+      }, 30 * 1000);
+      
     }
 
-    // return () => {
-    //   console.log('destroyed');
-    //   clearInterval(updateInterval);
-    // };
-  }, [updateTimer]);
-  
-  const [updateTimer, setUpdateTimer] = useStateCallback(true, () => {
-    console.log('invoked');
-    setTimeout(() => setUpdateTimer(!updateTimer), 1000);
+    return () => {
+      console.log('destroyed');
+      clearInterval(updateInterval);
+    };
   });
+  
+ 
   const [loadAll, setLoadAll] = useState(false);
   const [minPrayer, setMinPrayer] = useState(null);
   const [prayerTimes, setPrayerTimes] = useStateCallback({
