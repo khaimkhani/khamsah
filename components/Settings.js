@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 const Settings = ({ navigation }) => {
 
     return <View>
-        <Button onPress={() => navigation.push('Home')}>
+        <Button onPress={() => navigation.goBack()}>
             Back
         </Button>
         <Text>
