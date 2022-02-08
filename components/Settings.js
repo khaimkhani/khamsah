@@ -11,6 +11,11 @@ const Settings = ({ navigation }) => {
         </Button>
         <View>
             <Text>
+                These are the current settings
+            </Text>
+        </View>
+        <View style={styles.locationView}>
+            <Text>
                 Location:
             </Text>
             <Picker
@@ -33,7 +38,18 @@ const styles = StyleSheet.create({
     },
     picker: {
         width: 100,
-        height: 50
+        height: 30
+    },
+    locationView: {
+        height: '10',
+        width: '100',
+        margin: '4',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '5',
+        borderWidth: 1
     }
 
 });
