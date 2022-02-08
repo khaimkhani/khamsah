@@ -1,13 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Pressable } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
-import useStateCallback from './useStateCallback';
-import AllPrayersView from './components/allPrayersView';
+import useStateCallback from '../useStateCallback';
+import Icon from 'react-native-vector-icons/Ionicons';
+import AllPrayersView from './allPrayersView';
+import { Button } from 'react-native-web';
 
-export default function App() {
+export default function Home({ navigation }) {
   
   useEffect(() => {
     apiTimes();
+    console.log('this ran');
   }, []);
 
   useEffect(() => {
@@ -127,7 +130,8 @@ export default function App() {
         <Text style={styles.nextPrayerTime}>
           {!loadAll ? 'Loading...' : minPrayer + ' in ' + convertHours(closestPrayerTimes[minPrayer]) + 'h ' + convertMins(closestPrayerTimes[minPrayer]) + 'm'}
         </Text>
-      </View>
+        
+        </View>
       <ScrollView style={styles.scrollStyle}>
         
         {loadAll ? <AllPrayersView 
@@ -138,6 +142,10 @@ export default function App() {
                     minsFunc={convertMins}
                      /> : <Text>Please Wait</Text>}
                     
+
+        <Pressable style={styles.settingsIcon} onPress={() => navigation.push('Settings')}>
+          <Icon name='settings-outline' size={30} />
+        </Pressable> 
       </ScrollView>
     </View>
   );
@@ -179,6 +187,13 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'column'
+  },
+  settingsIcon: {
+      position: 'absolute',
+      top: 20,
+      right: 0,
+      marginTop: '5',
+      marginRight: '5'
   }
   
 });
