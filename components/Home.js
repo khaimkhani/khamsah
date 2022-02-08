@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Pressable } from 'react-native';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import useStateCallback from '../useStateCallback';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AllPrayersView from './allPrayersView';
@@ -12,6 +12,8 @@ export default function Home({ navigation }) {
     apiTimes();
     console.log('this ran');
   }, []);
+
+  
 
   useEffect(() => {
     // Finish timer
