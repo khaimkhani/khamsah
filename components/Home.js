@@ -36,7 +36,7 @@ export default function Home({ navigation }) {
  
   const [loadAll, setLoadAll] = useState(false);
   const [minPrayer, setMinPrayer] = useState(null);
-  const [minPrayerTime, setMinPrayerTime] = useState([0, 0]);
+  
   const [prayerTimes, setPrayerTimes] = useStateCallback({
     Fajr: '',
     Zuhr: '',
