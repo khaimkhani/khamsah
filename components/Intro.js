@@ -3,7 +3,7 @@ import { useState, useEffect} from "react";
 import countries from "../assets/countries";
 
 
-const Intro = ({ navigation }) => {
+const Intro = (props) => {
 
     const [dropDown, setDropDown] = useState([]);
 
