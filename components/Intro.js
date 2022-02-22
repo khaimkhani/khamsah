@@ -34,10 +34,8 @@ const Intro = ({ navigation }) => {
 
     const showClosest = (text, data) => {
         if (data.length <= 1 && text !== data[0]) {
-            setDropDown(null);
             return 0;
         }
-        
         let txtSize = text.length;
         let size = Math.floor(data.length / 2);
         
