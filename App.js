@@ -11,7 +11,7 @@ import * as Location from 'expo-location';
 
 export default function App() {
   
-  const [firstTime, setFirstTime] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
 
   useEffect(() => {
     setFirstTime(checkFirstTime());
