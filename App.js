@@ -6,7 +6,8 @@ import Intro from './components/Intro.js';
 import { useEffect, useState } from 'react';
 import Settings from './components/Settings.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Location from 'expo-location';
+import { registerRootComponent } from 'expo';
+
 
 
 export default function App() {
@@ -42,4 +43,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
 

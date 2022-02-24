@@ -1,4 +1,4 @@
-import { TextInput, View, Text, StyleSheet } from "react-native-web";
+import { TextInput, View, Text, StyleSheet } from "react-native";
 import { useState, useEffect} from "react";
 import countries from "../assets/countries";
 
@@ -8,24 +8,26 @@ const Intro = (props) => {
     const [dropDown, setDropDown] = useState([]);
 
     const updateClosest = (text) => {
-        // import city names
         if (text == '') {
             setDropDown([]);
         } else {
-            
             text = text.charAt(0).toUpperCase() + text.slice(1);
             let repArr = [];
             let closest = showClosest(text, countries);
             let i = closest - 1; let j = closest + 1;
             repArr.push(countries[closest])
-            while ((countries[i].slice(0, text.length).localeCompare(text) == 0) && (i > 0) && (repArr.length < 10)) {
-                repArr.push(countries[i]);
-                i -= 1;
-            }
-            
-            while ((countries[j].slice(0, text.length).localeCompare(text) == 0) && (j < countries.length - 1) && (repArr.length < 10)) {
-                repArr.push(countries[j]);
-                j += 1;
+            let k = 0;
+            while ((k < 6) && (repArr.length < 5)) {
+                
+                if (countries[i].slice(0, text.length).localeCompare(text) == 0) {
+                    repArr.push(countries[i]);
+                    i -= 1;
+                }
+                if (countries[j].slice(0, text.length).localeCompare(text) == 0) {
+                    repArr.push(countries[j]);
+                    j += 1;
+                }
+                k += 1
             }
             
             setDropDown(repArr);
@@ -56,30 +58,31 @@ const Intro = (props) => {
 
     return <View style={styles.introContainer}>
         <Text style={styles.inputPrompt}>
-            Enter your current city:
-            <Text style={styles.subInputPrompt}>
-                You can change this at any time in settings.
-            </Text>
+            Enter your City:
         </Text>
-        <TextInput 
-         onChangeText={tinput => {updateClosest(tinput)}}
-         style={styles.input}
-         />
-         <ul>
-             {dropDown.map((item, key) => {
-                 return <li key={key}> {item} </li>
-             })}
-         </ul>
+        <View style={styles.inputContainer}>
+            <TextInput 
+                onChangeText={tinput => {updateClosest(tinput)}}
+                style={styles.inputUser}
+                />
+                {dropDown.length !== 0 ?
+                    <View style={styles.dropDown}>
+                    {dropDown.map((item, key) => {
+                        return <Text style={styles.picker} key={key}>{item}</Text>
+                        })}
+                    </View> : null}
+        </View>
     </View>
 }
 
 const styles = StyleSheet.create({
     introContainer: {
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: '1px',
+        borderWidth: 1,
         height: '100vh'
     },
     inputPrompt: {
@@ -94,8 +97,25 @@ const styles = StyleSheet.create({
         fontSize: '8px',
         fontWeight: 'normal'
     },
-    input: {
-        borderWidth: '1px'
+    inputContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        height: '15vh'
+    },
+    inputUser: {
+        position: 'relative',
+        borderWidth: '1px',
+        width: '100%'
+    },
+    dropDown: {
+        display: 'flex',
+        position: 'relative',
+        height: 'auto',
+        width: '100%',
+        borderWidth: 1,
+    },
+    picker: {
+
     }
 });
 

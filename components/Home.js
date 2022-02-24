@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import useStateCallback from '../useStateCallback';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AllPrayersView from './allPrayersView';
-import { Button } from 'react-native-web';
+
 
 export default function Home({ navigation }) {
   

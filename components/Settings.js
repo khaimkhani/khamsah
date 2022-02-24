@@ -7,7 +7,7 @@ const Settings = ({ navigation }) => {
 
     return <View>
         <Button onPress={() => navigation.goBack()}>
-            Back
+            <Text>Back</Text>
         </Button>
         <View>
             <Text>
