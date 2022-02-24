@@ -1,6 +1,7 @@
-import { TextInput, View, Text, StyleSheet } from "react-native";
+import { TextInput, View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { useState, useEffect} from "react";
 import countries from "../assets/countries";
+
 
 
 const Intro = (props) => {
@@ -11,7 +12,6 @@ const Intro = (props) => {
         if (text == '') {
             setDropDown([]);
         } else {
-            text = text.charAt(0).toUpperCase() + text.slice(1);
             let repArr = [];
             let closest = showClosest(text, countries);
             let i = closest - 1; let j = closest + 1;
@@ -35,9 +35,7 @@ const Intro = (props) => {
     }
 
     const showClosest = (text, data) => {
-        if (data.length <= 1 && text !== data[0]) {
-            return 0;
-        }
+        if (data.length <= 1 && text !== data[0]) return 0;
         let txtSize = text.length;
         let size = Math.floor(data.length / 2);
         
@@ -60,18 +58,29 @@ const Intro = (props) => {
         <Text style={styles.inputPrompt}>
             Enter your City:
         </Text>
+        <Text style={styles.subInputPrompt}>
+            You can change this in settings.
+        </Text>
         <View style={styles.inputContainer}>
             <TextInput 
                 onChangeText={tinput => {updateClosest(tinput)}}
+                autoCapitalize='words'
                 style={styles.inputUser}
                 />
                 {dropDown.length !== 0 ?
                     <View style={styles.dropDown}>
                     {dropDown.map((item, key) => {
-                        return <Text style={styles.picker} key={key}>{item}</Text>
+                        return <Pressable onPress={() => {}} key={key}>
+                                <Text style={styles.picker} key={key}>{item}</Text>
+                                </Pressable>
                         })}
                     </View> : null}
         </View>
+        <TouchableOpacity>
+            <Text>
+                Send it
+            </Text>
+        </TouchableOpacity>
     </View>
 }
 
@@ -83,7 +92,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        height: '100vh'
+        height: '100%'
     },
     inputPrompt: {
         fontWeight: 'bold',
@@ -94,24 +103,24 @@ const styles = StyleSheet.create({
         margin: '5%'
     },
     subInputPrompt: {
-        fontSize: '8px',
+        fontSize: 8,
         fontWeight: 'normal'
     },
     inputContainer: {
         display: 'flex',
         alignItems: 'center',
-        height: '15vh'
+        height: 100
     },
     inputUser: {
         position: 'relative',
-        borderWidth: '1px',
-        width: '100%'
+        borderWidth: 1,
+        width: 140
     },
     dropDown: {
         display: 'flex',
         position: 'relative',
         height: 'auto',
-        width: '100%',
+        width: 140,
         borderWidth: 1,
     },
     picker: {

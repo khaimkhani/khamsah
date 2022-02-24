@@ -6,7 +6,7 @@ import Intro from './components/Intro.js';
 import { useEffect, useState } from 'react';
 import Settings from './components/Settings.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { registerRootComponent } from 'expo';
+
 
 
 
