@@ -1,19 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Pressable } from 'react-native';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useContext} from 'react';
 import useStateCallback from '../useStateCallback';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AllPrayersView from './allPrayersView';
+import { CityContext } from '../App';
 
 
 export default function Home({ navigation }) {
-  
+
+  const currCity = useContext(CityContext);  
+
   useEffect(() => {
     apiTimes();
     console.log('this ran');
   }, []);
-
-  
 
   useEffect(() => {
     // Finish timer
@@ -60,7 +61,8 @@ export default function Home({ navigation }) {
 
 
   const apiTimes = async () => {
-    let pTimes = await fetch('https://api.pray.zone/v2/times/today.json?city=toronto')
+    console.log(currCity);
+    let pTimes = await fetch('https://api.pray.zone/v2/times/today.json?city=' + currCity)
     .then(res => res.json())
     .then(data => {
       let timesObj = data.results.datetime['0'].times;

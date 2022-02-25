@@ -1,16 +1,20 @@
 import { TextInput, View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { useState, useEffect} from "react";
 import countries from "../assets/countries";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
 const Intro = (props) => {
 
     const [dropDown, setDropDown] = useState([]);
+    const [drop, setDrop] = useState(false);
+    const [pickCity, setPickCity] = useState('');
 
     const updateClosest = (text) => {
         if (text == '') {
             setDropDown([]);
+            setDrop(false);
         } else {
             let repArr = [];
             let closest = showClosest(text, countries);
@@ -31,6 +35,7 @@ const Intro = (props) => {
             }
             
             setDropDown(repArr);
+            setDrop(true);
         }
     }
 
@@ -54,6 +59,15 @@ const Intro = (props) => {
         }
     }
 
+    const processCity = async () => {
+        if (dropDown.includes(pickCity)) {
+            await AsyncStorage.setItem('currCity', pickCity);
+            props.setTimeInst(false);
+        }
+    }
+
+    
+
     return <View style={styles.introContainer}>
         <Text style={styles.inputPrompt}>
             Enter your City:
@@ -63,20 +77,23 @@ const Intro = (props) => {
         </Text>
         <View style={styles.inputContainer}>
             <TextInput 
-                onChangeText={tinput => {updateClosest(tinput)}}
+                onChangeText={tinput => {
+                    updateClosest(tinput);
+                    setPickCity(tinput)}}
                 autoCapitalize='words'
+                value={pickCity}
                 style={styles.inputUser}
                 />
-                {dropDown.length !== 0 ?
+                {drop ?
                     <View style={styles.dropDown}>
                     {dropDown.map((item, key) => {
-                        return <Pressable onPress={() => {}} key={key}>
+                        return <Pressable onPress={() => {setPickCity(item); setDrop(false)}} key={key}>
                                 <Text style={styles.picker} key={key}>{item}</Text>
                                 </Pressable>
                         })}
                     </View> : null}
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => processCity()}>
             <Text>
                 Send it
             </Text>
