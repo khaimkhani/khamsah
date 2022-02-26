@@ -22,8 +22,6 @@ export const showClosest = (text, data) => {
 
 export const updateClosestHelper = (text) => {
     if (text == '') {
-        // setDropDown([]);
-        // setDrop(false);
         return {ddArr: [], dd: false};
     } else {
         let repArr = [];
