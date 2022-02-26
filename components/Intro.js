@@ -22,7 +22,6 @@ const Intro = (props) => {
             repArr.push(countries[closest])
             let k = 0;
             while ((k < 6) && (repArr.length < 5)) {
-                
                 if (countries[i].slice(0, text.length).localeCompare(text) == 0) {
                     repArr.push(countries[i]);
                     i -= 1;

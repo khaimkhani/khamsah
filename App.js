@@ -30,7 +30,7 @@ export default function App() {
             return false;
           } else {
             setCity(res);
-            return false;
+            return true;
           }
         }
       ).catch(
