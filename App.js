@@ -7,7 +7,6 @@ import { useEffect, useState, createContext } from 'react';
 import Settings from './components/Settings.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 export const CityContext = createContext();
 
 export default function App() {
@@ -16,7 +15,6 @@ export default function App() {
   const [city, setCity] = useState('');
 
   useEffect(async () => {
-    
     setFirstTime(checkFirstTime());
     console.log(firstTime);
     console.log(AsyncStorage.getItem('currCity'))

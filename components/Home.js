@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AllPrayersView from './allPrayersView';
 import { CityContext } from '../App';
 
-
 export default function Home({ navigation }) {
 
   const currCity = useContext(CityContext);  
@@ -94,8 +93,6 @@ export default function Home({ navigation }) {
                     prayerTimes={prayerTimes} 
                     closestPrayerTimes={closestPrayerTimes}
                     minPrayer={minPrayer}
-                    hoursFunc={convertHours}
-                    minsFunc={convertMins}
                      /> : <Text>Please Wait</Text>}
         <Pressable style={styles.settingsIcon} onPress={() => navigation.push('Settings')}>
           <Icon name='settings-outline' size={30} />

@@ -16,8 +16,7 @@ const AllPrayersView = (props) => {
                     timeToPrayer={props.closestPrayerTimes[keyName]}
                     key={index} 
                     prayerTime={props.prayerTimes[keyName]}
-                    hoursFunc={props.hoursFunc}
-                    minsFunc={props.minsFunc} />
+                    />
                     
                 })
             }

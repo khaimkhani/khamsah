@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { convertHours, convertMins } from "../assets/TimeFunctions";
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const PrayerDetails = (props) => {
@@ -12,7 +13,7 @@ const PrayerDetails = (props) => {
                     {props.prayer}
                 </Text>
                 <Text>
-                    {'in ' + props.hoursFunc(props.timeToPrayer) + 'h ' + props.minsFunc(props.timeToPrayer) + 'm'}
+                    {'in ' + convertHours(props.timeToPrayer) + 'h ' + convertMins(props.timeToPrayer) + 'm'}
                 </Text>
             </View> 
             <Text>
